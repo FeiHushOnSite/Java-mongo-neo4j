@@ -18,6 +18,7 @@
     <modules>
         <module>mongoModule</module>
         <module>neo4jModule</module>
+        <module>conf</module>
     </modules>
 
     <properties>
