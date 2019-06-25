@@ -54,6 +54,9 @@ public class Neo4jController {
     @RequestMapping(path = "/addMongoNode", method = RequestMethod.GET)
     public String addMongoNode(@RequestParam(required = false) String param) {
         MongoTest mongoTest = restTemplate.getForObject(Mongo_URL + param, MongoTest.class);
+        if(null!= mongoTest){
+            return "not find data, please input correct query data";
+        }
         int i = 0;
         do {
             mongoService.addMongoNode(mongoTest);
