@@ -20,6 +20,7 @@
         <module>neo4jModule</module>
         <module>conf</module>
         <module>jy-security</module>
+        <module>jy-showdata</module>
     </modules>
 
     <properties>

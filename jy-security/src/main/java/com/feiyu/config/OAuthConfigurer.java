@@ -16,8 +16,13 @@ import java.security.KeyPair;
  */
 
 @Configuration
-@EnableAuthorizationServer
+@EnableAuthorizationServer    //启用OAuth2的认证服务器功能
 public class OAuthConfigurer extends AuthorizationServerConfigurerAdapter {
+
+    /**
+     * JwtAccessTokenConverter 方法中使用数字证书:keystore.jks 设置密码别名参数
+     * @return
+     */
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
@@ -27,6 +32,11 @@ public class OAuthConfigurer extends AuthorizationServerConfigurerAdapter {
         return converter;
     }
 
+    /**
+     * autoApprove (true)  这行设定了自动确认授权, 用户登陆后 不需要再次授权确认操作
+     * @param clients
+     * @throws Exception
+     */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception{
         clients.inMemory().withClient("ssoclient").secret("ssosecret")
