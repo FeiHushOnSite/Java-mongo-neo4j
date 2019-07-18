@@ -12,9 +12,9 @@ import java.nio.charset.Charset;
 @Configuration
 public class RestConfig {
 
-    @Value("message.username")
+    @Value("${message.username}")
     private String MassageUsername;
-    @Value("message.password")
+    @Value("${message.password}")
     private String MassagePassword;
 
     @Bean
