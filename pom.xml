@@ -23,6 +23,7 @@
         <module>jy-showdata</module>
         <module>jy-common</module>
         <module>jy-payment</module>
+        <module>java-hdfs</module>
     </modules>
 
     <properties>

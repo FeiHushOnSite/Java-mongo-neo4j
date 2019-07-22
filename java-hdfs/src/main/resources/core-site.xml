@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <!--hadoop 文件系统的临时目录(NameNode和DataNode默认存放在hadoop.tmp.dir目录下)-->
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>file:/usr/local/hadoop/hadoop/tmp</value>
+    </property>
+    <!--配置NameNode的URI-->
+    <property>
+        <name>fs.default.name</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>

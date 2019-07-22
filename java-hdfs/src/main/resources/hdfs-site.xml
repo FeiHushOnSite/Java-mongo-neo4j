@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <prperty>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </prperty>
+    <prperty>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:/usr/local/hadoop/hadoop/tmp/dfs/data</value>
+    </prperty>
+    <prperty>
+        <name>dfs.namenode.data.dir</name>
+        <value>file:/usr/local/hadoop/hadoop/tmp/dfs/name</value>
+    </prperty>
+</configuration>
