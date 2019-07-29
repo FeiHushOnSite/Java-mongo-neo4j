@@ -1,4 +1,4 @@
-package TestClient;
+package com.TestClient;
 
 
 import org.elasticsearch.action.get.GetResponse;
