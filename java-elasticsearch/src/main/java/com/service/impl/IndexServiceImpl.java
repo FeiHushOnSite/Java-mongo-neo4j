@@ -51,13 +51,13 @@ public class IndexServiceImpl implements IndexService {
 
 
             Map<String, Object> jsonMap = new HashMap<String, Object>();
-            jsonMap.put("name","jim"+id);
-            jsonMap.put("age",20+id);
-            jsonMap.put("date",new Date());
-            jsonMap.put("message","测试"+id);
-            jsonMap.put("tel","1234567");
+            jsonMap.put("name", "jim" + id);
+            jsonMap.put("age", 20 + id);
+            jsonMap.put("date", new Date());
+            jsonMap.put("message", "测试" + id);
+            jsonMap.put("tel", "1234567");
             //IndexResponse indexResponse = client.getConnection().prepareIndex("twitter", "tweet").setSource(JSONObject.toJSON(jsonMap), XContentType.JSON).get();
-            IndexResponse indexResponse = client.getConnection().prepareIndex("xiaot", "test",id).setSource(jsonMap).get();
+            IndexResponse indexResponse = client.getConnection().prepareIndex("XX", "test", id).setSource(jsonMap).get();
             // Index name
             String _index = indexResponse.getIndex();
             // Type name
@@ -68,8 +68,8 @@ public class IndexServiceImpl implements IndexService {
             long _version = indexResponse.getVersion();
             // status has stored current instance statement.
             RestStatus status = indexResponse.status();
-            System.out.println(_index+"_"+_type+"_"+_id+"_"+_version+"_"+status);
-        }catch (Exception ex){
+            System.out.println(_index + "_" + _type + "_" + _id + "_" + _version + "_" + status);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -78,7 +78,7 @@ public class IndexServiceImpl implements IndexService {
     public void get() {
         GetResponse response = client.getConnection().prepareGet("twitter", "tweet", "94pKEWABJOgzR6sJVCCV").get();
         Map<String, DocumentField> fields = response.getFields();
-        System.out.println("map:"+fields);
+        System.out.println("map:" + fields);
         String index = response.getIndex();
         Map<String, Object> source = response.getSource();
         String id = response.getId();
@@ -88,12 +88,12 @@ public class IndexServiceImpl implements IndexService {
 
     public void del(String id) {
         DeleteByQueryAction.INSTANCE.newRequestBuilder(client.getConnection())
-                .filter(QueryBuilders.matchQuery("_id",id))
+                .filter(QueryBuilders.matchQuery("_id", id))
                 .source("twitter")
                 .execute(new ActionListener<BulkByScrollResponse>() {
                     public void onResponse(BulkByScrollResponse response) {
                         long deleted = response.getDeleted();
-                        System.out.println("delete"+deleted);
+                        System.out.println("delete" + deleted);
                     }
 
                     public void onFailure(Exception e) {
@@ -102,8 +102,8 @@ public class IndexServiceImpl implements IndexService {
                 });
     }
 
-    public void update(String id)  throws  Exception{
-        client.getConnection().prepareUpdate("twitter","tweet",id)
+    public void update(String id) throws Exception {
+        client.getConnection().prepareUpdate("twitter", "tweet", id)
                 .setDoc(jsonBuilder()
                         .startObject()
                         .field("name", "tom")
@@ -117,7 +117,7 @@ public class IndexServiceImpl implements IndexService {
                 .get();
         for (MultiGetItemResponse multiGetItemResponse : multiGetResponse) {
             GetResponse response = multiGetItemResponse.getResponse();
-            if (response.isExists()){
+            if (response.isExists()) {
                 System.out.println(response.getSourceAsString());
             }
         }
@@ -126,8 +126,8 @@ public class IndexServiceImpl implements IndexService {
     public void bulk(String... ids) throws Exception {
         BulkRequestBuilder prepareBulk = client.getConnection().prepareBulk();
         for (String id : ids) {
-            prepareBulk.add(client.getConnection().prepareIndex("twitter","tweet",id)
-                    .setSource(jsonBuilder().startObject().field("name","肖添"+id).endObject()));
+            prepareBulk.add(client.getConnection().prepareIndex("twitter", "tweet", id)
+                    .setSource(jsonBuilder().startObject().field("name", "XX" + id).endObject()));
 
         }
         BulkResponse responses = prepareBulk.get();
@@ -138,7 +138,7 @@ public class IndexServiceImpl implements IndexService {
 
     }
 
-    public void bulkProcesstor(String index,String type,String... ids) throws Exception {
+    public void bulkProcesstor(String index, String type, String... ids) throws Exception {
         try {
 
             //IndexResponse indexResponse = client.getConnection().prepareIndex(index, type).setSource(getMapping()).get();
@@ -169,44 +169,44 @@ public class IndexServiceImpl implements IndexService {
 
             for (String id : ids) {
                 Map<String, Object> jsonMap = new HashMap<String, Object>();
-                jsonMap.put("name","中华人民共和国"+id);
-                jsonMap.put("age",30+Integer.parseInt(id));
-                jsonMap.put("date",new Date());
-                jsonMap.put("message","程序设计"+id);
-                jsonMap.put("tel","18612855433");
-                jsonMap.put("attr_name",new String[]{"品牌_sku_attr"+id,"商品类别_sku_attr"+id,"面料_sku_attr"+id});
-                jsonMap.put("create_date",new Date());
-                bulkProcessor.add(new IndexRequest(index,type,id).source(jsonMap));
+                jsonMap.put("name", "中华人民共和国" + id);
+                jsonMap.put("age", 30 + Integer.parseInt(id));
+                jsonMap.put("date", new Date());
+                jsonMap.put("message", "程序设计" + id);
+                jsonMap.put("tel", "13000000000");
+                jsonMap.put("attr_name", new String[]{"品牌_sku_attr" + id, "商品类别_sku_attr" + id, "面料_sku_attr" + id});
+                jsonMap.put("create_date", new Date());
+                bulkProcessor.add(new IndexRequest(index, type, id).source(jsonMap));
 
             }
             bulkProcessor.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
-        }finally {
+        } finally {
 
         }
 
     }
 
-    private XContentBuilder getMapping() throws Exception{
+    private XContentBuilder getMapping() throws Exception {
         XContentBuilder mapping = null;
         try {
 
             mapping = jsonBuilder().startObject()//.startObject("_ttl").field("enabled",false).endObject()
-                    .startObject("properties").startObject("name").field("type","text").field("analyzer","ik_max_word")
-                    .field("search_analyzer","ik_max_word").endObject()
-                    .startObject("age").field("type","long").endObject()
-                    .startObject("date").field("type","date").endObject()
-                    .startObject("message").field("type","keyword").field("index","true").endObject()
-                    .startObject("tel").field("type","keyword").endObject()
-                    .startObject("attr_name").field("type","keyword").field("index","true").endObject()
+                    .startObject("properties").startObject("name").field("type", "text").field("analyzer", "ik_max_word")
+                    .field("search_analyzer", "ik_max_word").endObject()
+                    .startObject("age").field("type", "long").endObject()
+                    .startObject("date").field("type", "date").endObject()
+                    .startObject("message").field("type", "keyword").field("index", "true").endObject()
+                    .startObject("tel").field("type", "keyword").endObject()
+                    .startObject("attr_name").field("type", "keyword").field("index", "true").endObject()
                     .endObject()
                     .endObject();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return  mapping;
+        return mapping;
     }
 }

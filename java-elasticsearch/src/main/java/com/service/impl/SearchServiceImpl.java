@@ -95,7 +95,7 @@ public class SearchServiceImpl implements SearchService {
         // searchRequestBuilder.setQuery(QueryBuilders.matchQuery("name","中华").operator(Operator.AND));
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        getFilterQuery("tel",new String[]{"18612855433"},"AND",queryBuilder);
+        getFilterQuery("tel",new String[]{"130000000000"},"AND",queryBuilder);
         // getFilterQuery("name",new String[]{"中华人民共和国"},"AND",queryBuilder);
 
 
